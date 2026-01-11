@@ -1,6 +1,9 @@
 # Dockerfile
 FROM python:3.12-slim
 
+# Set fixed path for Playwright browsers (avoids user/home mismatches)
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+
 # 1. System deps
 RUN apt-get update && apt-get install -y \
     curl git \
@@ -16,6 +19,7 @@ RUN poetry config virtualenvs.create false
 WORKDIR /app
 COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root --no-interaction
+RUN playwright install --with-deps
 
 # 5. Copy your code in
 COPY . .
