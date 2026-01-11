@@ -1,6 +1,9 @@
 # Dockerfile
 FROM python:3.12-slim
 
+# Set fixed path for Playwright browsers (avoids user/home mismatches)
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+
 # 1. System deps
 RUN apt-get update && apt-get install -y \
     curl git \
