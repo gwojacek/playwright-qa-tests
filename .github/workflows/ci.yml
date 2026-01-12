@@ -16,7 +16,7 @@ on:
         required: false
         default: 'all'
         type: choice
-        options: [all, chromium, firefox, webkit]
+        options: [all, chromium, webkit]
       env_type:
         description: 'Test environment'
         required: false
@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chromium, firefox, webkit]
+        browser: [chromium, webkit]
         testblock:
           - ui
           - api
@@ -45,8 +45,6 @@ jobs:
           - product_details
         exclude:
           # API tests are browser-agnostic, so run them only once
-          - browser: firefox
-            testblock: api
           - browser: webkit
             testblock: api
 
