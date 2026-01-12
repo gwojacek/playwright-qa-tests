@@ -1,3 +1,5 @@
+import os
+
 from playwright.sync_api import Page, expect
 
 from components.consent_popup import ConsentPopup
@@ -5,7 +7,7 @@ from pages.main_page import NavMenu
 
 
 class LoginPage:
-    URL = "https://www.automationexercise.com/login"
+    URL = f"{os.environ.get('ADDRESS')}/login"
 
     def __init__(self, page: Page):
         self.page = page
@@ -43,7 +45,7 @@ class LoginPage:
         nav_menu = NavMenu(self.page)
         expect(nav_menu.logout_btn).to_be_visible(timeout=5000)
         expect(nav_menu.delete_account_btn).to_be_visible(timeout=5000)
-        expect(self.page).to_have_url("https://www.automationexercise.com/")
+        expect(self.page).to_have_url(f"{os.environ.get('ADDRESS')}/")
 
     def not_logged_in(self):
         """Return True if neither Logout nor Delete Account button is displayed."""

@@ -15,11 +15,11 @@ class DeleteAccountPage:
         # Click 'Delete Account' in nav
         NavMenu(self.page).delete_account_btn.click()
         # Wait for URL to be correct
-        expect(self.page).to_have_url("https://www.automationexercise.com/delete_account")
+        expect(self.page).to_have_url(f"{os.environ.get('ADDRESS')}/delete_account")
         # Assert the header is present and correct
         expect(self.account_deleted_header).to_be_visible()
         expect(self.account_deleted_header).to_have_text("Account Deleted!")
         if click:
             self.continue_btn.click()
             # Wait for redirect to home
-            expect(self.page).to_have_url(os.environ.get("ADDRESS") + "/")
+            expect(self.page).to_have_url(f"{os.environ.get('ADDRESS')}/")
