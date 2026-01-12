@@ -96,18 +96,6 @@ def browser_context_args(browser_context_args):
 
 
 @pytest.fixture(scope="session")
-def browser_type_launch_args(browser_type_launch_args, browser_name):
-    if browser_name == "firefox":
-        return {
-            **browser_type_launch_args,
-            "firefox_user_prefs": {
-                "security.sandbox.content.level": 0,
-            },
-        }
-    return browser_type_launch_args
-
-
-@pytest.fixture(scope="session")
 def user_api(request):
     user_data = user_create_payload()
     other = {

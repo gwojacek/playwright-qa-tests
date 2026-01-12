@@ -4,7 +4,7 @@ set -euo pipefail
 export LOCAL_UID=$(id -u)
 export LOCAL_GID=$(id -g)
 
-BROWSER="chromium" # supports: chromium | firefox | webkit
+BROWSER="chromium" # supports: chromium | webkit
 MARKER=""
 WORKERS="auto"
 HEADED=false
@@ -12,8 +12,8 @@ ENV_TYPE="local"
 RERUNS=1
 
 usage(){ cat <<EOF >&2
-Usage: $0 [-b chromium|firefox|webkit] [-m <marker>] [-n <workers>] [-H] [-e <env_type>] [-r <reruns>]
-  -b    browser (chromium|firefox|webkit), default=chromium
+Usage: $0 [-b chromium|webkit] [-m <marker>] [-n <workers>] [-H] [-e <env_type>] [-r <reruns>]
+  -b    browser (chromium|webkit), default=chromium
   -m    pytest marker
   -n    xdist workers, default=auto
   -H    run in headed mode (not headless)
