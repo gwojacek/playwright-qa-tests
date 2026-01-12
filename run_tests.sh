@@ -9,24 +9,27 @@ MARKER=""
 WORKERS="auto"
 HEADED=false
 ENV_TYPE="local"
+RERUNS=1
 
 usage(){ cat <<EOF >&2
-Usage: $0 [-b chromium|firefox|webkit] [-m <marker>] [-n <workers>] [-H] [-e <env_type>]
+Usage: $0 [-b chromium|firefox|webkit] [-m <marker>] [-n <workers>] [-H] [-e <env_type>] [-r <reruns>]
   -b    browser (chromium|firefox|webkit), default=chromium
   -m    pytest marker
   -n    xdist workers, default=auto
   -H    run in headed mode (not headless)
   -e    environment type (local|staging), default=local
+  -r    number of reruns for failed tests, default=1
 EOF
 exit 1; }
 
-while getopts "b:m:n:He:" opt; do
+while getopts "b:m:n:He:r:" opt; do
   case $opt in
     b) BROWSER="$OPTARG" ;;
     m) MARKER="$OPTARG" ;;
     n) WORKERS="$OPTARG" ;;
     H) HEADED=true ;;
     e) ENV_TYPE="$OPTARG" ;;
+    r) RERUNS="$OPTARG" ;;
     *) usage ;;
   esac
 done
@@ -44,9 +47,9 @@ PYTEST_ARGS=(-v --color=yes)
 [ -n "$MARKER" ] && PYTEST_ARGS+=( -m "$MARKER" )
 [ "$HEADED" = true ] && PYTEST_ARGS+=( --headed )
 PYTEST_ARGS+=( --browser "$BROWSER" )
-PYTEST_ARGS+=( -n "$WORKERS" --html=tests/artifacts/report.html --self-contained-html )
+PYTEST_ARGS+=( -n "$WORKERS" --reruns "$RERUNS" --html=tests/artifacts/report.html --self-contained-html )
 
-echo "🧪 Running pytest ($BROWSER, headed=$HEADED, workers=$WORKERS, env=$ENV_TYPE)…"
+echo "🧪 Running pytest ($BROWSER, headed=$HEADED, workers=$WORKERS, env=$ENV_TYPE, reruns=$RERUNS)…"
 docker compose run --rm --no-deps \
   -e ENV_TYPE="$ENV_TYPE" \
   --entrypoint pytest \
