@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, Locator
+from playwright.sync_api import Page
 
 from components.add_to_cart_modal import AddToCartModal
 
@@ -14,22 +14,10 @@ class ProductDetailsPage:
     def __init__(self, page: Page):
         self.page = page
         self.component = self.page.locator(self._COMPONENT)
-
-    @property
-    def name_locator(self) -> Locator:
-        return self.component.locator(self._NAME)
-
-    @property
-    def price_locator(self) -> Locator:
-        return self.component.locator(self._PRICE)
-
-    @property
-    def quantity_input(self) -> Locator:
-        return self.component.locator(self._QUANTITY_INPUT)
-
-    @property
-    def add_to_cart_btn(self) -> Locator:
-        return self.component.locator(self._ADD_TO_CART_BTN)
+        self.name_locator = self.component.locator(self._NAME)
+        self.price_locator = self.component.locator(self._PRICE)
+        self.quantity_input = self.component.locator(self._QUANTITY_INPUT)
+        self.add_to_cart_btn = self.component.locator(self._ADD_TO_CART_BTN)
 
     @property
     def name(self) -> str:

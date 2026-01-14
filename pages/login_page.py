@@ -1,6 +1,6 @@
 import os
 
-from playwright.sync_api import Page, expect, Locator
+from playwright.sync_api import Page, expect
 
 from components.consent_popup import ConsentPopup
 from pages.main_page import NavMenu
@@ -23,40 +23,16 @@ class LoginPage:
 
     def __init__(self, page: Page):
         self.page = page
-
-    # --- Locators for login form ---
-    @property
-    def email_input(self) -> Locator:
-        return self.page.locator(self._EMAIL_INPUT)
-
-    @property
-    def password_input(self) -> Locator:
-        return self.page.locator(self._PASSWORD_INPUT)
-
-    @property
-    def login_button(self) -> Locator:
-        return self.page.locator(self._LOGIN_BUTTON)
-
-    @property
-    def login_form(self) -> Locator:
-        return self.page.locator(self._LOGIN_FORM)
-
-    # --- Locators for signup form ---
-    @property
-    def signup_name_input(self) -> Locator:
-        return self.page.locator(self._SIGNUP_NAME_INPUT)
-
-    @property
-    def signup_email_input(self) -> Locator:
-        return self.page.locator(self._SIGNUP_EMAIL_INPUT)
-
-    @property
-    def signup_button(self) -> Locator:
-        return self.page.locator(self._SIGNUP_BUTTON)
-
-    @property
-    def signup_form(self) -> Locator:
-        return self.page.locator(self._SIGNUP_FORM)
+        # Login form
+        self.email_input = self.page.locator(self._EMAIL_INPUT)
+        self.password_input = self.page.locator(self._PASSWORD_INPUT)
+        self.login_button = self.page.locator(self._LOGIN_BUTTON)
+        self.login_form = self.page.locator(self._LOGIN_FORM)
+        # Signup form
+        self.signup_name_input = self.page.locator(self._SIGNUP_NAME_INPUT)
+        self.signup_email_input = self.page.locator(self._SIGNUP_EMAIL_INPUT)
+        self.signup_button = self.page.locator(self._SIGNUP_BUTTON)
+        self.signup_form = self.page.locator(self._SIGNUP_FORM)
 
     def load(self) -> None:
         """Navigate to the login page and handle consent popup."""

@@ -1,6 +1,6 @@
 import os
 
-from playwright.sync_api import Page, expect, Locator
+from playwright.sync_api import Page, expect
 
 from pages.main_page import NavMenu
 
@@ -12,16 +12,10 @@ class DeleteAccountPage:
 
     def __init__(self, page: Page):
         self.page = page
-
-    @property
-    def account_deleted_header(self) -> Locator:
-        """The 'Account Deleted!' header locator."""
-        return self.page.locator(self._ACCOUNT_DELETED_HEADER)
-
-    @property
-    def continue_btn(self) -> Locator:
-        """The 'Continue' button locator."""
-        return self.page.locator(self._CONTINUE_BTN)
+        self.account_deleted_header = self.page.locator(
+            self._ACCOUNT_DELETED_HEADER
+        )
+        self.continue_btn = self.page.locator(self._CONTINUE_BTN)
 
     def delete_account_and_continue(self, click_continue: bool = True) -> None:
         """

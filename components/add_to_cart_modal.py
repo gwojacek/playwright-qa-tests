@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, expect, Locator
+from playwright.sync_api import Page, expect
 
 
 class AddToCartModal:
@@ -11,21 +11,9 @@ class AddToCartModal:
 
     def __init__(self, page: Page):
         self.page = page
-
-    @property
-    def modal(self) -> Locator:
-        """The modal content locator."""
-        return self.page.locator(self._MODAL)
-
-    @property
-    def view_cart_btn(self) -> Locator:
-        """The 'View Cart' button locator."""
-        return self.modal.locator(self._VIEW_CART_BTN)
-
-    @property
-    def continue_shopping_btn(self) -> Locator:
-        """The 'Continue Shopping' button locator."""
-        return self.modal.locator(self._CONTINUE_SHOPPING_BTN)
+        self.modal = self.page.locator(self._MODAL)
+        self.view_cart_btn = self.modal.locator(self._VIEW_CART_BTN)
+        self.continue_shopping_btn = self.modal.locator(self._CONTINUE_SHOPPING_BTN)
 
     def wait_until_visible(self, timeout: int = 5000) -> None:
         """Wait for modal to be visible."""

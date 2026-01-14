@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, TimeoutError, Locator
+from playwright.sync_api import Page, TimeoutError
 
 
 class ConsentPopup:
@@ -7,11 +7,7 @@ class ConsentPopup:
 
     def __init__(self, page: Page):
         self.page = page
-
-    @property
-    def consent_btn(self) -> Locator:
-        """The consent button locator."""
-        return self.page.locator(self._CONSENT_BTN)
+        self.consent_btn = self.page.locator(self._CONSENT_BTN)
 
     def accept(self, timeout: int = 5000) -> None:
         """Click consent if present; ignore if not found."""

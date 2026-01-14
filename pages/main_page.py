@@ -1,5 +1,6 @@
-from playwright.sync_api import Page, expect, Locator
 from typing import List
+
+from playwright.sync_api import Page, expect, Locator
 
 from components.add_to_cart_modal import AddToCartModal
 
@@ -10,6 +11,7 @@ class MainPage:
 
     def __init__(self, page: Page):
         self.page = page
+        self.search_input = self.page.locator(self._SEARCH_INPUT)
 
     def load(self) -> None:
         self.page.goto(self.URL)
@@ -17,10 +19,6 @@ class MainPage:
     @property
     def title(self) -> str:
         return self.page.title()
-
-    @property
-    def search_input(self) -> Locator:
-        return self.page.locator(self._SEARCH_INPUT)
 
     def search_input_exists(self) -> bool:
         return self.search_input.is_visible()
@@ -43,50 +41,21 @@ class NavMenu:
     def __init__(self, page: Page):
         self.page = page
         self.nav_menu = self.page.locator(self._NAV_MENU)
-
-    @property
-    def home_btn(self) -> Locator:
-        return self.nav_menu.locator(self._HOME_BTN)
-
-    @property
-    def products_btn(self) -> Locator:
-        return self.nav_menu.locator(self._PRODUCTS_BTN)
-
-    @property
-    def cart_btn(self) -> Locator:
-        return self.nav_menu.locator(self._CART_BTN)
-
-    @property
-    def login_btn(self) -> Locator:
-        return self.nav_menu.locator(self._LOGIN_BTN)
-
-    @property
-    def logout_btn(self) -> Locator:
-        return self.nav_menu.locator(self._LOGOUT_BTN)
-
-    @property
-    def contact_btn(self) -> Locator:
-        return self.nav_menu.locator(self._CONTACT_BTN)
-
-    @property
-    def test_cases_btn(self) -> Locator:
-        return self.nav_menu.locator(self._TEST_CASES_BTN)
-
-    @property
-    def api_testing_btn(self) -> Locator:
-        return self.nav_menu.locator(self._API_TESTING_BTN)
-
-    @property
-    def video_tutorials_btn(self) -> Locator:
-        return self.nav_menu.locator(self._VIDEO_TUTORIALS_BTN)
-
-    @property
-    def download_app_btn(self) -> Locator:
-        return self.nav_menu.locator(self._DOWNLOAD_APP_BTN)
-
-    @property
-    def delete_account_btn(self) -> Locator:
-        return self.nav_menu.locator(self._DELETE_ACCOUNT_BTN)
+        self.home_btn = self.nav_menu.locator(self._HOME_BTN)
+        self.products_btn = self.nav_menu.locator(self._PRODUCTS_BTN)
+        self.cart_btn = self.nav_menu.locator(self._CART_BTN)
+        self.login_btn = self.nav_menu.locator(self._LOGIN_BTN)
+        self.logout_btn = self.nav_menu.locator(self._LOGOUT_BTN)
+        self.contact_btn = self.nav_menu.locator(self._CONTACT_BTN)
+        self.test_cases_btn = self.nav_menu.locator(self._TEST_CASES_BTN)
+        self.api_testing_btn = self.nav_menu.locator(self._API_TESTING_BTN)
+        self.video_tutorials_btn = self.nav_menu.locator(
+            self._VIDEO_TUTORIALS_BTN
+        )
+        self.download_app_btn = self.nav_menu.locator(self._DOWNLOAD_APP_BTN)
+        self.delete_account_btn = self.nav_menu.locator(
+            self._DELETE_ACCOUNT_BTN
+        )
 
 
 class FeaturesItems:
@@ -102,26 +71,15 @@ class FeaturesItems:
         self.page = page
         self.component = self.page.locator(self._COMPONENT)
         self.product_cards = self.component.locator(self._PRODUCT_CARDS)
-
-    @property
-    def view_product_btn(self) -> Locator:
-        return self.product_cards.locator(self._VIEW_PRODUCT_BTN)
-
-    @property
-    def add_to_cart_btn(self) -> Locator:
-        return self.product_cards.locator(self._ADD_TO_CART_BTN)
-
-    @property
-    def product_name(self) -> Locator:
-        return self.product_cards.locator(self._PRODUCT_NAME)
-
-    @property
-    def product_price(self) -> Locator:
-        return self.product_cards.locator(self._PRODUCT_PRICE)
-
-    @property
-    def product_overlay(self) -> Locator:
-        return self.product_cards.locator(self._PRODUCT_OVERLAY)
+        self.view_product_btn = self.product_cards.locator(
+            self._VIEW_PRODUCT_BTN
+        )
+        self.add_to_cart_btn = self.product_cards.locator(
+            self._ADD_TO_CART_BTN
+        )
+        self.product_name = self.product_cards.locator(self._PRODUCT_NAME)
+        self.product_price = self.product_cards.locator(self._PRODUCT_PRICE)
+        self.product_overlay = self.product_cards.locator(self._PRODUCT_OVERLAY)
 
     def cards(self) -> List[Locator]:
         """Return all product cards as a list of locators."""
@@ -138,7 +96,6 @@ class FeaturesItems:
         self.card(index).hover()
         expect(self.product_overlay.nth(index)).to_be_visible()
         self.add_to_cart_btn.nth(index).click()
-
         modal = AddToCartModal(self.page)
         modal.wait_until_visible()
         if close_modal:
@@ -150,7 +107,6 @@ class FeaturesItems:
         self.card(index).hover()
         expect(self.product_overlay.nth(index)).to_be_visible()
         self.add_to_cart_btn.nth(index).click()
-
         modal = AddToCartModal(self.page)
         modal.wait_until_visible()
         modal.click_view_cart()
