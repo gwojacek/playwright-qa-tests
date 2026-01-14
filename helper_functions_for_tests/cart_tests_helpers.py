@@ -37,8 +37,8 @@ def add_from_details(
     features.view_product(idx)
     details = ProductDetailsPage(page)
     details.set_quantity(qty)
-    prod_name = details.name
-    price = details.price
+    prod_name = details.get_name()
+    price = details.get_price()
     details.add_to_cart(close_modal=close_modal)
     if back_to_main:
         page.goto(os.environ.get("ADDRESS"))
@@ -46,7 +46,7 @@ def add_from_details(
 
 
 def open_cart(page: Page) -> CartPage:
-    NavMenu(page).cart_btn.click()
+    NavMenu(page).click_cart()
     return CartPage(page)
 
 

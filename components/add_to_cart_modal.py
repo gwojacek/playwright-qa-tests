@@ -2,7 +2,6 @@ from playwright.sync_api import Page, expect
 
 
 class AddToCartModal:
-    # Class-level constants for selectors
     _MODAL = ".modal-content"
     _VIEW_CART_BTN = 'a[href="/view_cart"]'
     _CONTINUE_SHOPPING_BTN = (
@@ -11,22 +10,19 @@ class AddToCartModal:
 
     def __init__(self, page: Page):
         self.page = page
-        self.modal = self.page.locator(self._MODAL)
-        self.view_cart_btn = self.modal.locator(self._VIEW_CART_BTN)
-        self.continue_shopping_btn = self.modal.locator(self._CONTINUE_SHOPPING_BTN)
 
-    def wait_until_visible(self, timeout: int = 5000) -> None:
+    def wait_until_visible(self, timeout=5000):
         """Wait for modal to be visible."""
-        expect(self.modal).to_be_visible(timeout=timeout)
+        expect(self.page.locator(self._MODAL)).to_be_visible(timeout=timeout)
 
-    def click_continue_shopping(self) -> None:
+    def click_continue_shopping(self):
         """Click 'Continue Shopping' button on modal."""
-        self.continue_shopping_btn.click()
+        self.page.locator(self._MODAL).locator(self._CONTINUE_SHOPPING_BTN).click()
 
-    def click_view_cart(self) -> None:
+    def click_view_cart(self):
         """Click 'View Cart' link in modal."""
-        self.view_cart_btn.click()
+        self.page.locator(self._MODAL).locator(self._VIEW_CART_BTN).click()
 
-    def wait_until_invisible(self, timeout: int = 5000) -> None:
+    def wait_until_invisible(self, timeout=5000):
         """Wait for modal to be invisible."""
-        expect(self.modal).to_be_hidden(timeout=timeout)
+        expect(self.page.locator(self._MODAL)).to_be_hidden(timeout=timeout)

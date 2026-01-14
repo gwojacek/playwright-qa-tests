@@ -74,20 +74,20 @@ class ProductRow:
 class CartPage:
     page: Page
 
-    @property
-    def table_locator(self) -> Locator:
-        return self.page.locator("table.table.table-condensed")
-
-    @property
-    def rows_locator(self) -> Locator:
-        return self.table_locator.locator("tr[id^='product-']")
+    _TABLE = "table.table.table-condensed"
+    _ROWS = "tr[id^='product-']"
 
     def get_product_row(self, product_id: int) -> ProductRow:
-        row_locator = self.table_locator.locator(f"tr#product-{product_id}")
+        row_locator = self.page.locator(self._TABLE).locator(
+            f"tr#product-{product_id}"
+        )
         return ProductRow(row_locator)
 
     def get_all_rows(self) -> list[ProductRow]:
-        return [ProductRow(row) for row in self.rows_locator.all()]
+        return [
+            ProductRow(row)
+            for row in self.page.locator(self._TABLE).locator(self._ROWS).all()
+        ]
 
     def get_product_ids(self) -> list[int]:
         return [row.id for row in self.get_all_rows()]
