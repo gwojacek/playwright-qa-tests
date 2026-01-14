@@ -1,4 +1,5 @@
-from playwright.sync_api import Page, expect
+from typing import List
+from playwright.sync_api import Page, expect, Locator
 
 from components.add_to_cart_modal import AddToCartModal
 
@@ -20,86 +21,121 @@ class MainPage:
 
 
 class NavMenu:
+    _NAV_MENU = '[class*="shop-menu"]'
+    _HOME_BTN = 'a[href="/"]'
+    _PRODUCTS_BTN = 'a[href="/products"]'
+    _CART_BTN = 'a[href="/view_cart"]'
+    _LOGIN_BTN = 'a[href="/login"]'
+    _LOGOUT_BTN = 'a[href="/logout"]'
+    _CONTACT_BTN = 'a[href="/contact_us"]'
+    _TEST_CASES_BTN = 'a[href="/test_cases"]'
+    _API_TESTING_BTN = 'a[href="/api_list"]'
+    _VIDEO_TUTORIALS_BTN = 'a[href="/video_tutorials"]'
+    _DOWNLOAD_APP_BTN = 'a[href="/download_app"]'
+    _DELETE_ACCOUNT_BTN = 'a[href="/delete_account"]'
+
     def __init__(self, page: Page):
         self.page = page
-        self.home_btn = page.locator('[class*="shop-menu"] a[href="/"]')
-        self.products_btn = page.locator('[class*="shop-menu"] a[href="/products"]')
-        self.cart_btn = page.locator('[class*="shop-menu"] a[href="/view_cart"]')
-        self.login_btn = page.locator('[class*="shop-menu"] a[href="/login"]')
-        self.logout_btn = page.locator('[class*="shop-menu"] a[href="/logout"]')
-        self.contact_btn = page.locator('[class*="shop-menu"] a[href="/contact_us"]')
-        self.test_cases_btn = page.locator(
-            '[class*="shop-menu"] a[href="/test_cases"]'
+
+    def click_home(self):
+        self.page.locator(self._NAV_MENU).locator(self._HOME_BTN).click()
+
+    def click_products(self):
+        self.page.locator(self._NAV_MENU).locator(self._PRODUCTS_BTN).click()
+
+    def click_cart(self):
+        self.page.locator(self._NAV_MENU).locator(self._CART_BTN).click()
+
+    def click_login(self):
+        self.page.locator(self._NAV_MENU).locator(self._LOGIN_BTN).click()
+
+    def click_logout(self):
+        self.page.locator(self._NAV_MENU).locator(self._LOGOUT_BTN).click()
+
+    def click_contact(self):
+        self.page.locator(self._NAV_MENU).locator(self._CONTACT_BTN).click()
+
+    def click_test_cases(self):
+        self.page.locator(self._NAV_MENU).locator(self._TEST_CASES_BTN).click()
+
+    def click_api_testing(self):
+        self.page.locator(self._NAV_MENU).locator(self._API_TESTING_BTN).click()
+
+    def click_video_tutorials(self):
+        self.page.locator(self._NAV_MENU).locator(self._VIDEO_TUTORIALS_BTN).click()
+
+    def click_download_app(self):
+        self.page.locator(self._NAV_MENU).locator(self._DOWNLOAD_APP_BTN).click()
+
+    def click_delete_account(self):
+        self.page.locator(self._NAV_MENU).locator(self._DELETE_ACCOUNT_BTN).click()
+
+    def is_logged_in(self):
+        expect(self.page.locator(self._LOGOUT_BTN)).to_be_visible(timeout=5000)
+        expect(self.page.locator(self._DELETE_ACCOUNT_BTN)).to_be_visible(
+            timeout=5000
         )
-        self.api_testing_btn = page.locator('[class*="shop-menu"] a[href="/api_list"]')
-        self.video_tutorials_btn = page.locator(
-            '[class*="shop-menu"] a[href="/video_tutorials"]'
-        )
-        self.download_app_btn = page.locator(
-            '[class*="shop-menu"] a[href="/download_app"]'
-        )
-        self.delete_account_btn = page.locator(
-            '[class*="shop-menu"] a[href="/delete_account"]'
-        )
+
+    def is_logged_out(self):
+        expect(self.page.locator(self._LOGOUT_BTN)).not_to_be_visible()
+        expect(self.page.locator(self._DELETE_ACCOUNT_BTN)).not_to_be_visible()
 
 
 class FeaturesItems:
+    _COMPONENT = ".features_items"
+    _PRODUCT_CARDS = ".product-image-wrapper"
+    _VIEW_PRODUCT_BTN = ".choose a[href*='product_details']"
+    _ADD_TO_CART_BTN = ".overlay-content .add-to-cart"
+    _PRODUCT_NAME = ".productinfo p"
+    _PRODUCT_PRICE = ".productinfo h2"
+    _PRODUCT_OVERLAY = ".overlay-content"
+
     def __init__(self, page: Page):
         self.page = page
-        self.component = page.locator(".features_items")
-        self.product_cards = self.component.locator(".product-image-wrapper")
-        self.view_product_btn = self.product_cards.locator(
-            ".choose a[href*='product_details']"
-        )
-        self.add_to_cart_btn = self.product_cards.locator(
-            ".overlay-content .add-to-cart"
-        )
-        self.product_name = self.product_cards.locator("p")
-        self.product_price = self.product_cards.locator("h2")
-        self.product_overlay = self.product_cards.locator(".overlay-content")
 
-    def cards(self):
+    def cards(self) -> List[Locator]:
         """Return all product cards as a list of locators."""
-        return self.product_cards.all()
+        return self.page.locator(self._COMPONENT).locator(self._PRODUCT_CARDS).all()
 
-    def card(self, index=0):
+    def card(self, index=0) -> Locator:
         """Return a specific product card by index."""
-        return self.product_cards.nth(index)
+        return self.page.locator(self._COMPONENT).locator(self._PRODUCT_CARDS).nth(index)
 
     def view_product(self, index=0):
-        self.view_product_btn.nth(index).click()
+        self.card(index).locator(self._VIEW_PRODUCT_BTN).click()
 
     def add_to_cart_by_hover(self, index, close_modal=True):
-        self.card(index).hover()
-        expect(self.product_overlay.nth(index)).to_be_visible()
-        self.add_to_cart_btn.nth(index).click()
+        card = self.card(index)
+        card.hover()
+        expect(card.locator(self._PRODUCT_OVERLAY)).to_be_visible()
+        card.locator(self._ADD_TO_CART_BTN).click()
+
         modal = AddToCartModal(self.page)
         modal.wait_until_visible()
         if close_modal:
             modal.click_continue_shopping()
             modal.wait_until_invisible()
-            self.page.wait_for_load_state("networkidle")
 
     def add_to_cart_and_view_cart(self, index=0):
-        self.card(index).hover()
-        expect(self.product_overlay.nth(index)).to_be_visible()
-        self.add_to_cart_btn.nth(index).click()
+        card = self.card(index)
+        card.hover()
+        expect(card.locator(self._PRODUCT_OVERLAY)).to_be_visible()
+        card.locator(self._ADD_TO_CART_BTN).click()
+
         modal = AddToCartModal(self.page)
         modal.wait_until_visible()
         modal.click_view_cart()
 
-    def get_product_name(self, index=0):
-        return self.product_name.nth(index).inner_text().strip()
+    def get_product_name(self, index=0) -> str:
+        return self.card(index).locator(self._PRODUCT_NAME).inner_text().strip()
 
-    def get_product_detail_url(self, index=0):
-        return self.view_product_btn.nth(index).get_attribute("href")
+    def get_product_detail_url(self, index=0) -> str:
+        return self.card(index).locator(self._VIEW_PRODUCT_BTN).get_attribute("href")
 
-    def get_product_price(self, index=0):
-        """
-        Returns product price as int, stripping 'Rs. ' and commas.
-        Example: "Rs. 1,000" -> 1000
-        """
-        price_text = self.product_price.nth(index).inner_text()
-        # Remove currency and commas, keep only digits
-        price = price_text.replace("Rs. ", "").replace(",", "").strip()
-        return int(price)
+    def get_product_price(self, index=0) -> int:
+        price_text = self.card(index).locator(self._PRODUCT_PRICE).inner_text()
+        return self._parse_price(price_text)
+
+    @staticmethod
+    def _parse_price(text: str) -> int:
+        return int(text.replace("Rs. ", "").replace(",", "").strip())
