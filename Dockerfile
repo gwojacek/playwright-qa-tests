@@ -1,28 +1,23 @@
-# Dockerfile
-FROM python:3.12-slim
+# Use Playwright noble with Python 3.12
+FROM mcr.microsoft.com/playwright/python:v1.57.0-noble
 
-# Set fixed path for Playwright browsers (avoids user/home mismatches)
-ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
-
-# 1. System deps
-RUN apt-get update && apt-get install -y \
-    curl git \
-    && apt-get clean
-
-# 2. Install Poetry
-RUN pip install poetry
-
-# 3. Tell Poetry *not* to create venvs
-RUN poetry config virtualenvs.create false
-
-# 4. Copy manifest & install deps
 WORKDIR /app
-COPY pyproject.toml poetry.lock ./
-RUN poetry install --no-root --no-interaction
-RUN poetry run playwright install --with-deps
 
-# 5. Copy your code in
+# Copy dependency files first
+COPY pyproject.toml poetry.lock ./
+
+# Install Poetry and dependencies
+RUN pip install --upgrade pip \
+    && pip install poetry \
+    && poetry config virtualenvs.create false \
+    && poetry install --no-root --no-interaction \
+    && apt-get update && apt-get install -y xvfb
+
+# Copy the rest of the project
 COPY . .
 
-# 6. Default to pytest (so `docker compose run` just adds flags)
+# Ensure scripts are executable
+RUN chmod +x run_tests.sh
+
+# Default entrypoint
 ENTRYPOINT ["pytest"]
