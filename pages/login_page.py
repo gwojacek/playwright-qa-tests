@@ -9,51 +9,44 @@ from pages.main_page import NavMenu
 class LoginPage:
     URL = f"{os.environ.get('ADDRESS')}/login"
 
+    # Selectors for login form (left)
+    _EMAIL_INPUT = 'input[data-qa="login-email"]'
+    _PASSWORD_INPUT = 'input[data-qa="login-password"]'
+    _LOGIN_BUTTON = 'button[data-qa="login-button"]'
+
+    # Selectors for signup form (right)
+    _SIGNUP_NAME_INPUT = 'input[data-qa="signup-name"]'
+    _SIGNUP_EMAIL_INPUT = 'input[data-qa="signup-email"]'
+    _SIGNUP_BUTTON = 'button[data-qa="signup-button"]'
+
     def __init__(self, page: Page):
         self.page = page
-        # Login form (left)
-        self.email_input = page.locator('input[data-qa="login-email"]')
-        self.password_input = page.locator('input[data-qa="login-password"]')
-        self.login_button = page.locator('button[data-qa="login-button"]')
-        self.login_form = page.locator('form[action="/login"]')
-
-        # Signup form (right)
-        self.signup_name_input = page.locator('input[data-qa="signup-name"]')
-        self.signup_email_input = page.locator('input[data-qa="signup-email"]')
-        self.signup_button = page.locator('button[data-qa="signup-button"]')
-        self.signup_form = page.locator('form[action="/signup"]')
 
     def load(self):
         self.page.goto(self.URL)
         ConsentPopup(self.page).accept()  # Handles the popup if present
-        expect(self.email_input).to_be_visible()
+        expect(self.page.locator(self._EMAIL_INPUT)).to_be_visible()
 
     def login(self, email, password):
         """Fill login form and submit."""
-        self.email_input.fill(email)
-        self.password_input.fill(password)
-        self.login_button.click()
+        self.page.locator(self._EMAIL_INPUT).fill(email)
+        self.page.locator(self._PASSWORD_INPUT).fill(password)
+        self.page.locator(self._LOGIN_BUTTON).click()
         self.is_logged_in()
 
     def signup(self, name, email):
         """Fill signup form and submit."""
-        self.signup_name_input.fill(name)
-        self.signup_email_input.fill(email)
-        self.signup_button.click()
+        self.page.locator(self._SIGNUP_NAME_INPUT).fill(name)
+        self.page.locator(self._SIGNUP_EMAIL_INPUT).fill(email)
+        self.page.locator(self._SIGNUP_BUTTON).click()
 
     def is_logged_in(self):
-        nav_menu = NavMenu(self.page)
-        expect(nav_menu.logout_btn).to_be_visible(timeout=5000)
-        expect(nav_menu.delete_account_btn).to_be_visible(timeout=5000)
+        NavMenu(self.page).is_logged_in()
         expect(self.page).to_have_url(f"{os.environ.get('ADDRESS')}/")
 
     def not_logged_in(self):
-        """Return True if neither Logout nor Delete Account button is displayed."""
-        nav_menu = NavMenu(self.page)
-        return not (
-            nav_menu.logout_btn.is_visible() or nav_menu.delete_account_btn.is_visible()
-        )
+        NavMenu(self.page).is_logged_out()
 
     def logout(self):
-        NavMenu(self.page).logout_btn.click()
+        NavMenu(self.page).click_nav_btn(NavMenu.LOGOUT_BTN)
         expect(self.page).to_have_url(self.URL)

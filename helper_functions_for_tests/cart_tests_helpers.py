@@ -46,7 +46,7 @@ def add_from_details(
 
 
 def open_cart(page: Page) -> CartPage:
-    NavMenu(page).cart_btn.click()
+    NavMenu(page).click_nav_btn(NavMenu.CART_BTN)
     return CartPage(page)
 
 
@@ -60,7 +60,7 @@ def norm(string):
 
 def assert_cart_row_names(cart: CartPage, expected_names):
     rows = cart.get_all_rows()
-    cart_names = {norm(r.name()) for r in rows}
+    cart_names = {norm(r.name) for r in rows}
     for name in expected_names:
         assert norm(name) in cart_names, f"Product {name} not found in cart"
 
@@ -68,32 +68,32 @@ def assert_cart_row_names(cart: CartPage, expected_names):
 def assert_cart_row_quantities(cart: CartPage, products):
     rows = cart.get_all_rows()
     for name, qty in products:
-        row = next((r for r in rows if norm(r.name()) == norm(name)), None)
+        row = next((r for r in rows if norm(r.name) == norm(name)), None)
         assert row, f"Product {name} not found in cart"
         assert (
-            row.quantity() == qty
-        ), f"Expected quantity {qty} for {name}, got {row.quantity()}"
+            row.quantity == qty
+        ), f"Expected quantity {qty} for {name}, got {row.quantity}"
 
 
 def assert_cart_row_prices(cart: CartPage, products):
     rows = cart.get_all_rows()
     for name, _, price in products:
-        row = next((r for r in rows if norm(r.name()) == norm(name)), None)
+        row = next((r for r in rows if norm(r.name) == norm(name)), None)
         assert row, f"Product {name} not found in cart"
         assert (
-            row.price() == price
-        ), f"Expected price {price} for {name}, got {row.price()}"
+            row.price == price
+        ), f"Expected price {price} for {name}, got {row.price}"
 
 
 def assert_cart_row_line_totals(cart: CartPage, products):
     rows = cart.get_all_rows()
     for name, qty, price in products:
-        row = next((r for r in rows if norm(r.name()) == norm(name)), None)
+        row = next((r for r in rows if norm(r.name) == norm(name)), None)
         assert row, f"Product {name} not found in cart"
         expected_line_total = qty * price
         assert (
-            row.total() == expected_line_total
-        ), f"Line total mismatch for {name}: {row.total()} != {price} * {qty}"
+            row.total == expected_line_total
+        ), f"Line total mismatch for {name}: {row.total} != {price} * {qty}"
 
 
 def assert_cart_total(cart: CartPage, products):
