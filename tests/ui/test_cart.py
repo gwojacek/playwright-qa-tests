@@ -62,7 +62,6 @@ def test_add_same_product_main_and_details(page_on_address):
 
 @ui
 @cart
-@pytest.mark.test1
 def test_add_different_products_main_and_details(page_on_address):
     """
     Add one product from main and a different one from details.
@@ -81,8 +80,6 @@ def test_add_different_products_main_and_details(page_on_address):
             (prod2.name, prod2.qty, prod2.price),
         ],
     )
-    pytest.fail("This test is forced to fail")
-
 
 
 @ui
