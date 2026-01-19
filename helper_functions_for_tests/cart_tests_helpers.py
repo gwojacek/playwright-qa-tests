@@ -46,7 +46,7 @@ def add_from_details(
 
 
 def open_cart(page: Page) -> CartPage:
-    NavMenu(page).click_cart()
+    NavMenu(page).click_nav_btn(NavMenu.CART_BTN)
     return CartPage(page)
 
 

@@ -48,5 +48,5 @@ class LoginPage:
         NavMenu(self.page).is_logged_out()
 
     def logout(self):
-        NavMenu(self.page).click_logout()
+        NavMenu(self.page).click_nav_btn(NavMenu.LOGOUT_BTN)
         expect(self.page).to_have_url(self.URL)

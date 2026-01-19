@@ -21,64 +21,37 @@ class MainPage:
 
 
 class NavMenu:
-    _NAV_MENU = '[class*="shop-menu"]'
-    _HOME_BTN = 'a[href="/"]'
-    _PRODUCTS_BTN = 'a[href="/products"]'
-    _CART_BTN = 'a[href="/view_cart"]'
-    _LOGIN_BTN = 'a[href="/login"]'
-    _LOGOUT_BTN = 'a[href="/logout"]'
-    _CONTACT_BTN = 'a[href="/contact_us"]'
-    _TEST_CASES_BTN = 'a[href="/test_cases"]'
-    _API_TESTING_BTN = 'a[href="/api_list"]'
-    _VIDEO_TUTORIALS_BTN = 'a[href="/video_tutorials"]'
-    _DOWNLOAD_APP_BTN = 'a[href="/download_app"]'
-    _DELETE_ACCOUNT_BTN = 'a[href="/delete_account"]'
+    HOME_BTN = '[class*="shop-menu"] a[href="/"]'
+    PRODUCTS_BTN = '[class*="shop-menu"] a[href="/products"]'
+    CART_BTN = '[class*="shop-menu"] a[href="/view_cart"]'
+    LOGIN_BTN = '[class*="shop-menu"] a[href="/login"]'
+    LOGOUT_BTN = '[class*="shop-menu"] a[href="/logout"]'
+    CONTACT_BTN = '[class*="shop-menu"] a[href="/contact_us"]'
+    TEST_CASES_BTN = '[class*="shop-menu"] a[href="/test_cases"]'
+    API_TESTING_BTN = '[class*="shop-menu"] a[href="/api_list"]'
+    VIDEO_TUTORIALS_BTN = '[class*="shop-menu"] a[href="/video_tutorials"]'
+    DOWNLOAD_APP_BTN = '[class*="shop-menu"] a[href="/download_app"]'
+    DELETE_ACCOUNT_BTN = '[class*="shop-menu"] a[href="/delete_account"]'
 
     def __init__(self, page: Page):
         self.page = page
 
-    def click_home(self):
-        self.page.locator(self._NAV_MENU).locator(self._HOME_BTN).click()
-
-    def click_products(self):
-        self.page.locator(self._NAV_MENU).locator(self._PRODUCTS_BTN).click()
-
-    def click_cart(self):
-        self.page.locator(self._NAV_MENU).locator(self._CART_BTN).click()
-
-    def click_login(self):
-        self.page.locator(self._NAV_MENU).locator(self._LOGIN_BTN).click()
-
-    def click_logout(self):
-        self.page.locator(self._NAV_MENU).locator(self._LOGOUT_BTN).click()
-
-    def click_contact(self):
-        self.page.locator(self._NAV_MENU).locator(self._CONTACT_BTN).click()
-
-    def click_test_cases(self):
-        self.page.locator(self._NAV_MENU).locator(self._TEST_CASES_BTN).click()
-
-    def click_api_testing(self):
-        self.page.locator(self._NAV_MENU).locator(self._API_TESTING_BTN).click()
-
-    def click_video_tutorials(self):
-        self.page.locator(self._NAV_MENU).locator(self._VIDEO_TUTORIALS_BTN).click()
-
-    def click_download_app(self):
-        self.page.locator(self._NAV_MENU).locator(self._DOWNLOAD_APP_BTN).click()
-
-    def click_delete_account(self):
-        self.page.locator(self._NAV_MENU).locator(self._DELETE_ACCOUNT_BTN).click()
+    def click_nav_btn(self, btn_selector: str):
+        """
+        Click any navigation menu button.
+        Usage: nav.click_nav_btn(NavMenu.LOGIN_BTN)
+        """
+        self.page.locator(btn_selector).click()
 
     def is_logged_in(self):
-        expect(self.page.locator(self._LOGOUT_BTN)).to_be_visible(timeout=5000)
-        expect(self.page.locator(self._DELETE_ACCOUNT_BTN)).to_be_visible(
+        expect(self.page.locator(self.LOGOUT_BTN)).to_be_visible(timeout=5000)
+        expect(self.page.locator(self.DELETE_ACCOUNT_BTN)).to_be_visible(
             timeout=5000
         )
 
     def is_logged_out(self):
-        expect(self.page.locator(self._LOGOUT_BTN)).not_to_be_visible()
-        expect(self.page.locator(self._DELETE_ACCOUNT_BTN)).not_to_be_visible()
+        expect(self.page.locator(self.LOGOUT_BTN)).not_to_be_visible()
+        expect(self.page.locator(self.DELETE_ACCOUNT_BTN)).not_to_be_visible()
 
 
 class FeaturesItems:
