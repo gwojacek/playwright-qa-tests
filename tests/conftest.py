@@ -46,7 +46,10 @@ def pytest_runtest_makereport(item, call):
         return
 
     # Consider all non-passed outcomes: failed, xfailed (skipped), xpassed
-    if report.outcome not in ("failed", "skipped"):
+    has_xfail = item.get_closest_marker("xfail") is not None
+    if report.outcome == "skipped" and not has_xfail:
+        return
+    if report.outcome == "passed":
         return
 
     page = item.funcargs.get("page")

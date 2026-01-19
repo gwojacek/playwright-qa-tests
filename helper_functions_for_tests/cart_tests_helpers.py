@@ -80,9 +80,7 @@ def assert_cart_row_prices(cart: CartPage, products):
     for name, _, price in products:
         row = next((r for r in rows if norm(r.name) == norm(name)), None)
         assert row, f"Product {name} not found in cart"
-        assert (
-            row.price == price
-        ), f"Expected price {price} for {name}, got {row.price}"
+        assert row.price == price, f"Expected price {price} for {name}, got {row.price}"
 
 
 def assert_cart_row_line_totals(cart: CartPage, products):

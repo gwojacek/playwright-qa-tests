@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, Locator
+from playwright.sync_api import Page
 
 from components.add_to_cart_modal import AddToCartModal
 

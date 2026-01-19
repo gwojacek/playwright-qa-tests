@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from playwright.sync_api import Page, Locator
+from playwright.sync_api import Locator, Page
 
 
 @dataclass
@@ -78,9 +78,7 @@ class CartPage:
     _ROWS = "tr[id^='product-']"
 
     def get_product_row(self, product_id: int) -> ProductRow:
-        row_locator = self.page.locator(self._TABLE).locator(
-            f"tr#product-{product_id}"
-        )
+        row_locator = self.page.locator(self._TABLE).locator(f"tr#product-{product_id}")
         return ProductRow(row_locator)
 
     def get_all_rows(self) -> list[ProductRow]:

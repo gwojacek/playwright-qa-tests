@@ -61,8 +61,8 @@ docker compose version
 ### 1. Clone the repository
 
 ```
-git clone https://github.com/gwojacek/qa-demo-repository.git
-cd qa-demo-repository
+git clone https://github.com/gwojacek/playwright-qa-tests.git
+cd playwright-qa-tests
 ```
 ### 2. Install Poetry (if not installed)
 Poetry is required for dependency management. You only need to install it once per machine.

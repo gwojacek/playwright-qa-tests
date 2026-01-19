@@ -1,5 +1,6 @@
 from typing import List
-from playwright.sync_api import Page, expect, Locator
+
+from playwright.sync_api import Locator, Page, expect
 
 from components.add_to_cart_modal import AddToCartModal
 
@@ -45,9 +46,7 @@ class NavMenu:
 
     def is_logged_in(self):
         expect(self.page.locator(self.LOGOUT_BTN)).to_be_visible(timeout=5000)
-        expect(self.page.locator(self.DELETE_ACCOUNT_BTN)).to_be_visible(
-            timeout=5000
-        )
+        expect(self.page.locator(self.DELETE_ACCOUNT_BTN)).to_be_visible(timeout=5000)
 
     def is_logged_out(self):
         expect(self.page.locator(self.LOGOUT_BTN)).not_to_be_visible()
@@ -72,7 +71,9 @@ class FeaturesItems:
 
     def card(self, index=0) -> Locator:
         """Return a specific product card by index."""
-        return self.page.locator(self._COMPONENT).locator(self._PRODUCT_CARDS).nth(index)
+        return (
+            self.page.locator(self._COMPONENT).locator(self._PRODUCT_CARDS).nth(index)
+        )
 
     def view_product(self, index=0):
         self.card(index).locator(self._VIEW_PRODUCT_BTN).click()

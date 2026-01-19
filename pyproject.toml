@@ -5,7 +5,7 @@ description = "QA automation tests with Playwright"
 authors = ["Jacek Gwoździewicz"]
 
 packages = [
-    { include = "playwright-qa-tests", from = "src" }
+    { include = "playwright_qa_tools", from = "src" }
 ]
 
 [tool.poetry.dependencies]
@@ -26,7 +26,7 @@ pytest-rerunfailures = "^15.0.0"
 
 
 [tool.poetry.scripts]
-lints = "playwright-qa-tests.cli:lints"
+lints = "playwright_qa_tools.cli:lints"
 
 [tool.pytest.ini_options]
 markers = [
@@ -60,13 +60,16 @@ exclude = '''
 [tool.isort]
 profile = "black"
 line_length = 88
-known_first_party = "qa_demo_repository"
+known_first_party = "playwright_qa_tools"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
 version = "1.3.0"
 tag_format = "$version"
-changelog_file = "Changelog.md"
+changelog_file = "CHANGELOG.md"
 update_changelog_on_bump = true
-changelog_incremental = true
-version_files = ["pyproject.toml:version", "Changelog.md"]
+version_files = [
+    "pyproject.toml:version",
+    "src/playwright_qa_tools/__init__.py:__version__",
+    "CHANGELOG.md"
+]
