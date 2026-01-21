@@ -147,7 +147,7 @@ The `run_tests.sh` script manages test execution with several customizable optio
 ./run_tests.sh -n 4 -m ui
 
 # Run UI tests in headed mode with Playwright Inspector
-./run_tests.sh -m ui -H -D
+./run_tests.sh -m ui -D
 
 # Run UI tests with tracing enabled
 ./run_tests.sh -m ui -T

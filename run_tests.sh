@@ -44,17 +44,14 @@ while getopts "b:m:n:He:r:DT" opt; do
 done
 
 # ---------------------------
-# Inspector safety checks
+# Inspector behavior
 # ---------------------------
-if [ "$DEBUG" = true ] && [ "$HEADED" = false ]; then
-  echo "❌ Playwright Inspector requires headed mode (-H)."
-  exit 1
-fi
-
 if [ "$DEBUG" = true ]; then
-  echo "🐞 Inspector enabled → forcing xdist workers = 1"
+  echo "🐞 Inspector enabled → forcing headed mode + xdist workers = 1"
+  HEADED=true
   WORKERS=1
 fi
+
 
 # ---------------------------
 # Tracing checks
